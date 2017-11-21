@@ -13,11 +13,10 @@ function birtaError() {
 }
 
 function breytaDuration(timi) {
-
   var min = Math.floor(timi / 60);
   var sek = timi - min * 60;
 
-  if (sek == 0) {
+  if (sek === 0) {
     sek = '00';
   } else if (sek < 10) {
     sek = '0' + sek;
@@ -157,7 +156,7 @@ function loadMovies() {
     if (request.status >= 200 && request.status < 400) {
       data = JSON.parse(request.response);
 
-      //makeVideoColumn(data.videos[1], main);
+      // makeVideoColumn(data.videos[1], main);
       makeVideoList(data);
     }
   };

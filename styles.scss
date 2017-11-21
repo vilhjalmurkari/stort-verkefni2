@@ -22,8 +22,8 @@ html { /* stylelint-disable-line */
 
   font-family: helvetica, arial, sans-serif;
   font-size: 16px;
-  color: #fff;
   line-height: 1.5;
+  color: #fff;
 
   background-color: #323232;
 
@@ -44,8 +44,3 @@ section {
 }
 
 @import "scss/videolist";
-
-/*@import "scss/form";
-@import "scss/countdown";
-@import "scss/button";
-*/
