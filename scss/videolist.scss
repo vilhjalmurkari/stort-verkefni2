@@ -22,6 +22,9 @@
     display: flex;
     width: 31%;
     margin-right: $gutter;
+    color: #fff;
+    text-decoration: none;
+    cursor: pointer;
     flex-direction: column;
 
     @media (max-width: 1050px) {
@@ -30,32 +33,28 @@
       margin-bottom: $gutter;
     }
 
-    // Þetta virkar ekki af einhverjum ástæðum
     @media (max-width: 600px) {
       width: 100%;
     }
-
-  }
-
-  &__content {
-    //overflow: hidden;
   }
 
   &__poster {
     max-width: 100%;
+    position: relative;
   }
 
   &__overlay {
-    width: 100%;
+
+    position: absolute;
+    font-size: 0.875rem;
+    right: 1%;
+    bottom: 6%;
+
+  }
+  &__over {
+    padding: 3px 4px;
     background-color: rgba(0, 0, 0, 0.5);
 
-    /*
-    padding: 2px;
-    position: fixed;
-    font-size: 0.875rem;
-    right: 0;
-    down: 0;
-    */
   }
 
   &__title {

@@ -81,7 +81,10 @@ function timiSidan(timi) {
 
 function makeVideoColumn(data, element) {
   // Dálkurinn sem inniheldur allt um myndbandið
-  var column = document.createElement('div');
+  var column = document.createElement('a');
+  var url = 'video.html?id=' + data.id;
+  console.log(url);
+  column.setAttribute('href', url);
   column.setAttribute('class', 'videolist__col');
 
   // Myndin
@@ -156,8 +159,13 @@ function loadMovies() {
     if (request.status >= 200 && request.status < 400) {
       data = JSON.parse(request.response);
 
-      // makeVideoColumn(data.videos[1], main);
+      //makeVideoColumn(data.videos[1], main);
       makeVideoList(data);
+
+      var col = document.querySelectorAll('.videolist__col');
+      console.log(col);
+
+      console.log(data);
     }
   };
 
@@ -166,6 +174,11 @@ function loadMovies() {
   };
   request.send();
 }
+
+/////////////////////////////////////////////
+// Hér byrjar það sem er notað í video.html//
+/////////////////////////////////////////////
+
 
 document.addEventListener('DOMContentLoaded', function () {
   loadMovies();
