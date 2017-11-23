@@ -7,54 +7,74 @@
     margin-bottom: $gutter;
   }
 
+  &__video-container {
+    width: 100%;
+    margin-bottom: $gutter;
+  }
+
   &__video {
     width: 100%;
-    margin-bottom: 4 * $gutter;
+  }
+
+  &__img {
+    width: 100%;
+    margin-bottom: $gutter;
   }
 
   &__button-list {
     width: 33.333%;
     display: flex;
     margin-bottom: $gutter;
-    justify-content: space-between;
-
+    justify-content: space-around;
   }
 
   &__back {
-    width: 20%;
-
-    background-image: url('/img/back.svg');
+    width: 15%;
+  /*  background-image: url('/img/back.svg');
     background-repeat: no-repeat;
+    background-size: 100% 100%;*/
   }
 
   &__fullscreen {
-    background-image: url('/img/fullscreen.svg');
+    width: 15%;
+  /*  background-image: url('/img/fullscreen.svg');
     background-repeat: no-repeat;
+    background-size: 100% 100%;*/
   }
 
   &__mute {
-    background-image: url('/img/mute.svg');
+    width: 15%;
+  /*  background-image: url('/img/mute.svg');
     background-repeat: no-repeat;
+    background-size: 100% 100%;*/
   }
 
   &__next {
-    background-image: url('/img/next.svg');
+    width: 15%;
+    /*background-image: url('/img/next.svg');
     background-repeat: no-repeat;
+    background-size: 100% 100%;*/
   }
 
   &__pause {
-    background-image: url('/img/pause.svg');
+    width: 15%;
+    /*background-image: url('/img/pause.svg');
     background-repeat: no-repeat;
+    background-size: 100% 100%;*/
   }
 
   &__play {
-    background-image: url('play.svg');
+    width: 15%;
+    /*background-image: url('/img/play.svg');
     background-repeat: no-repeat;
+    background-size: 100% 100%;*/
   }
 
   &__unmute {
-    background-image: url('/img/unmute.svg');
+    width: 15%;
+  /*  background-image: url('/img/unmute.svg');
     background-repeat: no-repeat;
+    background-size: 100% 100%;*/
   }
 
   &__to-original-page {
