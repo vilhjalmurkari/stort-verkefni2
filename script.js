@@ -157,7 +157,6 @@ function loadMovies() {
       data = JSON.parse(request.response);
 
       makeVideoList(data);
-
     }
   };
 
@@ -166,11 +165,6 @@ function loadMovies() {
   };
   request.send();
 }
-
-/////////////////////////////////////////////
-// Hér byrjar það sem er notað í video.html//
-/////////////////////////////////////////////
-
 
 document.addEventListener('DOMContentLoaded', () => {
   loadMovies();

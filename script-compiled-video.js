@@ -19,7 +19,6 @@ function setjaImgAElement(img, element) {
 }
 
 function geraDivFyrirTakka(div) {
-
   var d1 = document.createElement('div');
   d1.setAttribute('class', 'video__back');
   setjaImgAElement('/img/back.svg', d1);
@@ -67,7 +66,6 @@ function geraDivFyrirTakka(div) {
 }
 
 function geraVideo(data) {
-
   var div = document.createElement('div');
   div.setAttribute('class', 'video');
 
@@ -82,7 +80,16 @@ function geraVideo(data) {
   poster.setAttribute('class', 'video__video');
   poster.setAttribute('poster', data.poster);
   poster.setAttribute('src', data.video);
+
+  var overlay = document.createElement('div');
+  overlay.setAttribute('class', 'video__overlay');
+  var over = document.createElement('img');
+  over.setAttribute('class', 'video__over');
+  over.setAttribute('src', '/img/play.svg');
+  overlay.appendChild(over);
+
   divForVideo.appendChild(poster);
+  divForVideo.appendChild(overlay);
   div.appendChild(divForVideo);
 
   var buttons = document.createElement('div');
@@ -102,38 +109,42 @@ function geraVideo(data) {
 
 function spolaTilbaka() {
   var video = document.querySelector('.video__video');
-  video.currentTime = video.currentTime - 3;
+  video.currentTime -= 3;
 }
 
 function spolaAfram() {
   var video = document.querySelector('.video__video');
-  video.currentTime = video.currentTime + 3;
+  video.currentTime += 3;
 }
 
-function spila(nuverandi, thadSemBreytist) {
+function spila(nuverandi, thadSemBreytist, overlay) {
   var video = document.querySelector('.video__video');
   video.play();
 
   nuverandi.setAttribute('class', 'video__play-hidden');
   thadSemBreytist.setAttribute('class', 'video__pause');
+  overlay.setAttribute('class', 'video__overlay-hidden');
 
   var a = new Array();
   a.push(nuverandi);
   a.push(thadSemBreytist);
+  a.push(overlay);
 
   return a;
 }
 
-function pasa(nuverandi, thadSemBreytist) {
+function pasa(nuverandi, thadSemBreytist, overlay) {
   var video = document.querySelector('.video__video');
   video.pause();
 
   nuverandi.setAttribute('class', 'video__play');
   thadSemBreytist.setAttribute('class', 'video__pause-hidden');
+  overlay.setAttribute('class', 'video__overlay');
 
   var a = new Array();
   a.push(nuverandi);
   a.push(thadSemBreytist);
+  a.push(overlay);
 
   return a;
 }
@@ -169,13 +180,10 @@ function soundOn(nuverandi, thadSemBreytist) {
 function fullscreen() {
   var video = document.querySelector('.video__video');
   if (video.requestFullscreen) {
-    console.log("request");
     video.requestFullscreen();
   } else if (video.mozRequestFullScreen) {
-    console.log("moz");
     video.mozRequestFullScreen();
   } else if (video.webkitRequestFullscreen) {
-    console.log("webkit");
     video.webkitRequestFullscreen();
   }
 }
@@ -191,9 +199,8 @@ function loadMovie() {
     if (request.status >= 200 && request.status < 400) {
       data = JSON.parse(request.response);
 
-      for (var i = 0; i < data.videos.length; i++) {
-
-        if (data.videos[i].id == parseInt(location.search.substring(4), 10)) {
+      for (var i = 0; i < data.videos.length; i += 1) {
+        if (data.videos[i].id === parseInt(location.search.substring(4), 10)) {
           myndband = data.videos[i];
         }
       }
@@ -207,7 +214,8 @@ function loadMovie() {
       var full = document.querySelector('.video__fullscreen');
       var mute = document.querySelector('.video__mute');
       var unmute = document.querySelector('.video__unmute-hidden');
-      console.log(full);
+      var overlay = document.querySelector('.video__overlay');
+      console.log(overlay);
 
       var a = new Array();
 
@@ -215,17 +223,19 @@ function loadMovie() {
       next.addEventListener('click', spolaAfram);
 
       play.addEventListener('click', function () {
-        a = spila(play, pause);
+        a = spila(play, pause, overlay);
 
         play = a[0];
         pause = a[1];
+        overlay = a[2];
       });
 
       pause.addEventListener('click', function () {
-        a = pasa(play, pause);
+        a = pasa(play, pause, overlay);
 
         play = a[0];
         pause = a[1];
+        overlay = a[2];
       });
 
       mute.addEventListener('click', function () {
@@ -244,6 +254,14 @@ function loadMovie() {
 
       full.addEventListener('click', function () {
         fullscreen();
+      });
+
+      overlay.addEventListener('click', function () {
+        a = spila(play, pause, overlay);
+
+        play = a[0];
+        pause = a[1];
+        overlay = a[2];
       });
     }
   };

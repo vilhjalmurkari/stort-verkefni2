@@ -17,55 +17,53 @@ function setjaImgAElement(img, element) {
 }
 
 function geraDivFyrirTakka(div) {
+  const d1 = document.createElement('div');
+  d1.setAttribute('class', 'video__back');
+  setjaImgAElement('/img/back.svg', d1);
+  div.appendChild(d1);
 
-    const d1 = document.createElement('div');
-    d1.setAttribute('class', 'video__back');
-    setjaImgAElement('/img/back.svg', d1);
-    div.appendChild(d1);
+  const d2 = document.createElement('div');
+  d2.setAttribute('class', 'video__play-and-pause');
 
-    const d2 = document.createElement('div');
-    d2.setAttribute('class', 'video__play-and-pause');
+  const d21 = document.createElement('div');
+  d21.setAttribute('class', 'video__play');
+  setjaImgAElement('/img/play.svg', d21);
 
-    const d21 = document.createElement('div');
-    d21.setAttribute('class', 'video__play');
-    setjaImgAElement('/img/play.svg', d21);
+  const d22 = document.createElement('div');
+  d22.setAttribute('class', 'video__pause-hidden');
+  setjaImgAElement('/img/pause.svg', d22);
 
-    const d22 = document.createElement('div');
-    d22.setAttribute('class', 'video__pause-hidden');
-    setjaImgAElement('/img/pause.svg', d22);
+  d2.appendChild(d21);
+  d2.appendChild(d22);
+  div.appendChild(d2);
 
-    d2.appendChild(d21);
-    d2.appendChild(d22);
-    div.appendChild(d2);
+  const d3 = document.createElement('div');
+  d3.setAttribute('class', 'video__mute-and-unmute');
 
-    const d3 = document.createElement('div');
-    d3.setAttribute('class', 'video__mute-and-unmute');
+  const d31 = document.createElement('div');
+  d31.setAttribute('class', 'video__mute');
+  setjaImgAElement('/img/mute.svg', d31);
 
-    const d31 = document.createElement('div');
-    d31.setAttribute('class', 'video__mute');
-    setjaImgAElement('/img/mute.svg', d31);
+  const d32 = document.createElement('div');
+  d32.setAttribute('class', 'video__unmute-hidden');
+  setjaImgAElement('/img/unmute.svg', d32);
 
-    const d32 = document.createElement('div');
-    d32.setAttribute('class', 'video__unmute-hidden');
-    setjaImgAElement('/img/unmute.svg', d32);
+  d3.appendChild(d31);
+  d3.appendChild(d32);
+  div.appendChild(d3);
 
-    d3.appendChild(d31);
-    d3.appendChild(d32);
-    div.appendChild(d3);
+  const d4 = document.createElement('div');
+  d4.setAttribute('class', 'video__fullscreen');
+  setjaImgAElement('/img/fullscreen.svg', d4);
+  div.appendChild(d4);
 
-    const d4 = document.createElement('div');
-    d4.setAttribute('class', 'video__fullscreen');
-    setjaImgAElement('/img/fullscreen.svg', d4);
-    div.appendChild(d4);
-
-    const d5 = document.createElement('div');
-    d5.setAttribute('class', 'video__next');
-    setjaImgAElement('/img/next.svg', d5);
-    div.appendChild(d5);
+  const d5 = document.createElement('div');
+  d5.setAttribute('class', 'video__next');
+  setjaImgAElement('/img/next.svg', d5);
+  div.appendChild(d5);
 }
 
 function geraVideo(data) {
-
   const div = document.createElement('div');
   div.setAttribute('class', 'video');
 
@@ -80,7 +78,16 @@ function geraVideo(data) {
   poster.setAttribute('class', 'video__video');
   poster.setAttribute('poster', data.poster);
   poster.setAttribute('src', data.video);
+
+  const overlay = document.createElement('div');
+  overlay.setAttribute('class', 'video__overlay');
+  const over = document.createElement('img');
+  over.setAttribute('class', 'video__over');
+  over.setAttribute('src', '/img/play.svg');
+  overlay.appendChild(over);
+
   divForVideo.appendChild(poster);
+  divForVideo.appendChild(overlay);
   div.appendChild(divForVideo);
 
   const buttons = document.createElement('div');
@@ -100,38 +107,42 @@ function geraVideo(data) {
 
 function spolaTilbaka() {
   const video = document.querySelector('.video__video');
-  video.currentTime = video.currentTime - 3;
+  video.currentTime -= 3;
 }
 
 function spolaAfram() {
   const video = document.querySelector('.video__video');
-  video.currentTime = video.currentTime + 3;
+  video.currentTime += 3;
 }
 
-function spila(nuverandi, thadSemBreytist) {
+function spila(nuverandi, thadSemBreytist, overlay) {
   const video = document.querySelector('.video__video');
   video.play();
 
   nuverandi.setAttribute('class', 'video__play-hidden');
   thadSemBreytist.setAttribute('class', 'video__pause');
+  overlay.setAttribute('class', 'video__overlay-hidden');
 
   let a = new Array();
   a.push(nuverandi);
   a.push(thadSemBreytist);
+  a.push(overlay);
 
   return a;
 }
 
-function pasa(nuverandi, thadSemBreytist) {
+function pasa(nuverandi, thadSemBreytist, overlay) {
   const video = document.querySelector('.video__video');
   video.pause();
 
   nuverandi.setAttribute('class', 'video__play');
   thadSemBreytist.setAttribute('class', 'video__pause-hidden');
+  overlay.setAttribute('class', 'video__overlay');
 
   let a = new Array();
   a.push(nuverandi);
   a.push(thadSemBreytist);
+  a.push(overlay);
 
   return a;
 }
@@ -167,13 +178,10 @@ function soundOn(nuverandi, thadSemBreytist) {
 function fullscreen() {
   const video = document.querySelector('.video__video');
   if (video.requestFullscreen) {
-    console.log("request");
     video.requestFullscreen();
   } else if (video.mozRequestFullScreen) {
-    console.log("moz");
     video.mozRequestFullScreen();
   } else if (video.webkitRequestFullscreen) {
-    console.log("webkit");
     video.webkitRequestFullscreen();
   }
 }
@@ -189,9 +197,8 @@ function loadMovie() {
     if (request.status >= 200 && request.status < 400) {
       data = JSON.parse(request.response);
 
-      for (let i = 0; i < data.videos.length; i++) {
-
-        if (data.videos[i].id == parseInt(location.search.substring(4), 10)) {
+      for (let i = 0; i < data.videos.length; i += 1) {
+        if (data.videos[i].id === parseInt(location.search.substring(4), 10)) {
           myndband = data.videos[i];
         }
       }
@@ -205,26 +212,29 @@ function loadMovie() {
       const full = document.querySelector('.video__fullscreen');
       let mute = document.querySelector('.video__mute');
       let unmute = document.querySelector('.video__unmute-hidden');
-      console.log(full);
+      let overlay = document.querySelector('.video__overlay');
+      console.log(overlay);
 
       let a = new Array();
 
-      back.addEventListener('click', spolaTilbaka );
-      next.addEventListener('click', spolaAfram );
+      back.addEventListener('click', spolaTilbaka);
+      next.addEventListener('click', spolaAfram);
 
 
       play.addEventListener('click', () => {
-        a = spila(play, pause);
+        a = spila(play, pause, overlay);
 
         play = a[0];
         pause = a[1];
+        overlay = a[2];
       });
 
       pause.addEventListener('click', () => {
-        a = pasa(play, pause);
+        a = pasa(play, pause, overlay);
 
         play = a[0];
         pause = a[1];
+        overlay = a[2];
       });
 
       mute.addEventListener('click', () => {
@@ -241,9 +251,16 @@ function loadMovie() {
         unmute = a[1];
       });
 
-
       full.addEventListener('click', () => {
         fullscreen();
+      });
+
+      overlay.addEventListener('click', () => {
+        a = spila(play, pause, overlay);
+
+        play = a[0];
+        pause = a[1];
+        overlay = a[2];
       });
 
 
