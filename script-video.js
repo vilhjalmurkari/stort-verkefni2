@@ -24,13 +24,33 @@ function geraDivFyrirTakka(div) {
     div.appendChild(d1);
 
     const d2 = document.createElement('div');
-    d2.setAttribute('class', 'video__play');
-    setjaImgAElement('/img/play.svg', d2);
+    d2.setAttribute('class', 'video__play-and-pause');
+
+    const d21 = document.createElement('div');
+    d21.setAttribute('class', 'video__play');
+    setjaImgAElement('/img/play.svg', d21);
+
+    const d22 = document.createElement('div');
+    d22.setAttribute('class', 'video__pause-hidden');
+    setjaImgAElement('/img/pause.svg', d22);
+
+    d2.appendChild(d21);
+    d2.appendChild(d22);
     div.appendChild(d2);
 
     const d3 = document.createElement('div');
-    d3.setAttribute('class', 'video__mute');
-    setjaImgAElement('/img/mute.svg', d3);
+    d3.setAttribute('class', 'video__mute-and-unmute');
+
+    const d31 = document.createElement('div');
+    d31.setAttribute('class', 'video__mute');
+    setjaImgAElement('/img/mute.svg', d31);
+
+    const d32 = document.createElement('div');
+    d32.setAttribute('class', 'video__unmute-hidden');
+    setjaImgAElement('/img/unmute.svg', d32);
+
+    d3.appendChild(d31);
+    d3.appendChild(d32);
     div.appendChild(d3);
 
     const d4 = document.createElement('div');
@@ -56,9 +76,10 @@ function geraVideo(data) {
 
   const divForVideo = document.createElement('div');
   divForVideo.setAttribute('class', 'video__video-container');
-  const poster = document.createElement('img');
-  poster.setAttribute('class', 'video__img');
-  poster.setAttribute('src', data.poster);
+  const poster = document.createElement('video');
+  poster.setAttribute('class', 'video__video');
+  poster.setAttribute('poster', data.poster);
+  poster.setAttribute('src', data.video);
   divForVideo.appendChild(poster);
   div.appendChild(divForVideo);
 
@@ -77,36 +98,85 @@ function geraVideo(data) {
   main.appendChild(div);
 }
 
-function empty(element) {
-  while (element.hasChildNodes()) {
-    element.removeChild(element.lastChild)
-  }
+function spolaTilbaka() {
+  const video = document.querySelector('.video__video');
+  video.currentTime = video.currentTime - 3;
 }
 
+function spolaAfram() {
+  const video = document.querySelector('.video__video');
+  video.currentTime = video.currentTime + 3;
+}
 
-function spila(data) {
-  const videoDiv = document.querySelector('.video__video-container');
-  empty(videoDiv);
-
-  const video = document.createElement('video');
-  video.setAttribute('class', 'video__video');
-  video.setAttribute('src', data.video);
-  videoDiv.appendChild(video);
+function spila(nuverandi, thadSemBreytist) {
+  const video = document.querySelector('.video__video');
   video.play();
 
+  nuverandi.setAttribute('class', 'video__play-hidden');
+  thadSemBreytist.setAttribute('class', 'video__pause');
 
+  let a = new Array();
+  a.push(nuverandi);
+  a.push(thadSemBreytist);
+
+  return a;
+}
+
+function pasa(nuverandi, thadSemBreytist) {
+  const video = document.querySelector('.video__video');
+  video.pause();
+
+  nuverandi.setAttribute('class', 'video__play');
+  thadSemBreytist.setAttribute('class', 'video__pause-hidden');
+
+  let a = new Array();
+  a.push(nuverandi);
+  a.push(thadSemBreytist);
+
+  return a;
+}
+
+function soundOff(nuverandi, thadSemBreytist) {
+  const video = document.querySelector('.video__video');
+  video.muted = true;
+
+  nuverandi.setAttribute('class', 'video__mute-hidden');
+  thadSemBreytist.setAttribute('class', 'video__unmute');
+
+  let a = new Array();
+  a.push(nuverandi);
+  a.push(thadSemBreytist);
+
+  return a;
+}
+
+function soundOn(nuverandi, thadSemBreytist) {
+  const video = document.querySelector('.video__video');
+  video.muted = false;
+
+  nuverandi.setAttribute('class', 'video__mute');
+  thadSemBreytist.setAttribute('class', 'video__unmute-hidden');
+
+  let a = new Array();
+  a.push(nuverandi);
+  a.push(thadSemBreytist);
+
+  return a;
 }
 
 function fullscreen() {
   const video = document.querySelector('.video__video');
   if (video.requestFullscreen) {
+    console.log("request");
     video.requestFullscreen();
+  } else if (video.mozRequestFullScreen) {
+    console.log("moz");
+    video.mozRequestFullScreen();
+  } else if (video.webkitRequestFullscreen) {
+    console.log("webkit");
+    video.webkitRequestFullscreen();
   }
-
 }
-
-
-
 
 function loadMovie() {
   const request = new XMLHttpRequest();
@@ -126,24 +196,51 @@ function loadMovie() {
         }
       }
 
-
-
       geraVideo(myndband);
 
-      const play = document.querySelector('.video__play');
+      let play = document.querySelector('.video__play');
+      let pause = document.querySelector('.video__pause-hidden');
       const back = document.querySelector('.video__back');
       const next = document.querySelector('.video__next');
       const full = document.querySelector('.video__fullscreen');
-      const mute = document.querySelector('.video__mute');
-      console.log(back);
-      console.log(play);
-      console.log(mute);
+      let mute = document.querySelector('.video__mute');
+      let unmute = document.querySelector('.video__unmute-hidden');
       console.log(full);
-      console.log(next);
+
+      let a = new Array();
+
+      back.addEventListener('click', spolaTilbaka );
+      next.addEventListener('click', spolaAfram );
+
 
       play.addEventListener('click', () => {
-        spila(myndband);
+        a = spila(play, pause);
+
+        play = a[0];
+        pause = a[1];
       });
+
+      pause.addEventListener('click', () => {
+        a = pasa(play, pause);
+
+        play = a[0];
+        pause = a[1];
+      });
+
+      mute.addEventListener('click', () => {
+        a = soundOff(mute, unmute);
+
+        mute = a[0];
+        unmute = a[1];
+      });
+
+      unmute.addEventListener('click', () => {
+        a = soundOn(mute, unmute);
+
+        mute = a[0];
+        unmute = a[1];
+      });
+
 
       full.addEventListener('click', () => {
         fullscreen();

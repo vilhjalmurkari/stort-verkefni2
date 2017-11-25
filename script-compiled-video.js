@@ -26,13 +26,33 @@ function geraDivFyrirTakka(div) {
   div.appendChild(d1);
 
   var d2 = document.createElement('div');
-  d2.setAttribute('class', 'video__play');
-  setjaImgAElement('/img/play.svg', d2);
+  d2.setAttribute('class', 'video__play-and-pause');
+
+  var d21 = document.createElement('div');
+  d21.setAttribute('class', 'video__play');
+  setjaImgAElement('/img/play.svg', d21);
+
+  var d22 = document.createElement('div');
+  d22.setAttribute('class', 'video__pause-hidden');
+  setjaImgAElement('/img/pause.svg', d22);
+
+  d2.appendChild(d21);
+  d2.appendChild(d22);
   div.appendChild(d2);
 
   var d3 = document.createElement('div');
-  d3.setAttribute('class', 'video__mute');
-  setjaImgAElement('/img/mute.svg', d3);
+  d3.setAttribute('class', 'video__mute-and-unmute');
+
+  var d31 = document.createElement('div');
+  d31.setAttribute('class', 'video__mute');
+  setjaImgAElement('/img/mute.svg', d31);
+
+  var d32 = document.createElement('div');
+  d32.setAttribute('class', 'video__unmute-hidden');
+  setjaImgAElement('/img/unmute.svg', d32);
+
+  d3.appendChild(d31);
+  d3.appendChild(d32);
   div.appendChild(d3);
 
   var d4 = document.createElement('div');
@@ -58,9 +78,10 @@ function geraVideo(data) {
 
   var divForVideo = document.createElement('div');
   divForVideo.setAttribute('class', 'video__video-container');
-  var poster = document.createElement('img');
-  poster.setAttribute('class', 'video__img');
-  poster.setAttribute('src', data.poster);
+  var poster = document.createElement('video');
+  poster.setAttribute('class', 'video__video');
+  poster.setAttribute('poster', data.poster);
+  poster.setAttribute('src', data.video);
   divForVideo.appendChild(poster);
   div.appendChild(divForVideo);
 
@@ -79,27 +100,83 @@ function geraVideo(data) {
   main.appendChild(div);
 }
 
-function empty(element) {
-  while (element.hasChildNodes()) {
-    element.removeChild(element.lastChild);
-  }
+function spolaTilbaka() {
+  var video = document.querySelector('.video__video');
+  video.currentTime = video.currentTime - 3;
 }
 
-function spila(data) {
-  var videoDiv = document.querySelector('.video__video-container');
-  empty(videoDiv);
+function spolaAfram() {
+  var video = document.querySelector('.video__video');
+  video.currentTime = video.currentTime + 3;
+}
 
-  var video = document.createElement('video');
-  video.setAttribute('class', 'video__video');
-  video.setAttribute('src', data.video);
-  videoDiv.appendChild(video);
+function spila(nuverandi, thadSemBreytist) {
+  var video = document.querySelector('.video__video');
   video.play();
+
+  nuverandi.setAttribute('class', 'video__play-hidden');
+  thadSemBreytist.setAttribute('class', 'video__pause');
+
+  var a = new Array();
+  a.push(nuverandi);
+  a.push(thadSemBreytist);
+
+  return a;
+}
+
+function pasa(nuverandi, thadSemBreytist) {
+  var video = document.querySelector('.video__video');
+  video.pause();
+
+  nuverandi.setAttribute('class', 'video__play');
+  thadSemBreytist.setAttribute('class', 'video__pause-hidden');
+
+  var a = new Array();
+  a.push(nuverandi);
+  a.push(thadSemBreytist);
+
+  return a;
+}
+
+function soundOff(nuverandi, thadSemBreytist) {
+  var video = document.querySelector('.video__video');
+  video.muted = true;
+
+  nuverandi.setAttribute('class', 'video__mute-hidden');
+  thadSemBreytist.setAttribute('class', 'video__unmute');
+
+  var a = new Array();
+  a.push(nuverandi);
+  a.push(thadSemBreytist);
+
+  return a;
+}
+
+function soundOn(nuverandi, thadSemBreytist) {
+  var video = document.querySelector('.video__video');
+  video.muted = false;
+
+  nuverandi.setAttribute('class', 'video__mute');
+  thadSemBreytist.setAttribute('class', 'video__unmute-hidden');
+
+  var a = new Array();
+  a.push(nuverandi);
+  a.push(thadSemBreytist);
+
+  return a;
 }
 
 function fullscreen() {
   var video = document.querySelector('.video__video');
   if (video.requestFullscreen) {
+    console.log("request");
     video.requestFullscreen();
+  } else if (video.mozRequestFullScreen) {
+    console.log("moz");
+    video.mozRequestFullScreen();
+  } else if (video.webkitRequestFullscreen) {
+    console.log("webkit");
+    video.webkitRequestFullscreen();
   }
 }
 
@@ -124,18 +201,45 @@ function loadMovie() {
       geraVideo(myndband);
 
       var play = document.querySelector('.video__play');
+      var pause = document.querySelector('.video__pause-hidden');
       var back = document.querySelector('.video__back');
       var next = document.querySelector('.video__next');
       var full = document.querySelector('.video__fullscreen');
       var mute = document.querySelector('.video__mute');
-      console.log(back);
-      console.log(play);
-      console.log(mute);
+      var unmute = document.querySelector('.video__unmute-hidden');
       console.log(full);
-      console.log(next);
+
+      var a = new Array();
+
+      back.addEventListener('click', spolaTilbaka);
+      next.addEventListener('click', spolaAfram);
 
       play.addEventListener('click', function () {
-        spila(myndband);
+        a = spila(play, pause);
+
+        play = a[0];
+        pause = a[1];
+      });
+
+      pause.addEventListener('click', function () {
+        a = pasa(play, pause);
+
+        play = a[0];
+        pause = a[1];
+      });
+
+      mute.addEventListener('click', function () {
+        a = soundOff(mute, unmute);
+
+        mute = a[0];
+        unmute = a[1];
+      });
+
+      unmute.addEventListener('click', function () {
+        a = soundOn(mute, unmute);
+
+        mute = a[0];
+        unmute = a[1];
       });
 
       full.addEventListener('click', function () {
