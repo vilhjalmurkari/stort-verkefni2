@@ -72,6 +72,9 @@
 
   &__back {
     width: 15%;
+    color: inherit;
+    background: none;
+    border: 0;
   }
 
   &__image:focus {
@@ -81,6 +84,9 @@
 
   &__play-and-pause {
     width: 15%;
+    color: inherit;
+    background: none;
+    border: 0;
   }
 
   &__play {
@@ -101,6 +107,9 @@
 
   &__mute-and-unmute {
     width: 15%;
+    color: inherit;
+    background: none;
+    border: 0;
   }
 
   &__mute {
@@ -121,10 +130,16 @@
 
   &__fullscreen {
     width: 15%;
+    color: inherit;
+    background: none;
+    border: 0;
   }
 
   &__next {
     width: 15%;
+    color: inherit;
+    background: none;
+    border: 0;
   }
 
   &__to-original-page {

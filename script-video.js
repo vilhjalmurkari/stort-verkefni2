@@ -17,12 +17,12 @@ function setjaImgAElement(img, element) {
 }
 
 function geraDivFyrirTakka(div) {
-  const d1 = document.createElement('div');
+  const d1 = document.createElement('button');
   d1.setAttribute('class', 'video__back');
   setjaImgAElement('/img/back.svg', d1);
   div.appendChild(d1);
 
-  const d2 = document.createElement('div');
+  const d2 = document.createElement('button');
   d2.setAttribute('class', 'video__play-and-pause');
 
   const d21 = document.createElement('div');
@@ -37,7 +37,7 @@ function geraDivFyrirTakka(div) {
   d2.appendChild(d22);
   div.appendChild(d2);
 
-  const d3 = document.createElement('div');
+  const d3 = document.createElement('button');
   d3.setAttribute('class', 'video__mute-and-unmute');
 
   const d31 = document.createElement('div');
@@ -52,12 +52,12 @@ function geraDivFyrirTakka(div) {
   d3.appendChild(d32);
   div.appendChild(d3);
 
-  const d4 = document.createElement('div');
+  const d4 = document.createElement('button');
   d4.setAttribute('class', 'video__fullscreen');
   setjaImgAElement('/img/fullscreen.svg', d4);
   div.appendChild(d4);
 
-  const d5 = document.createElement('div');
+  const d5 = document.createElement('button');
   d5.setAttribute('class', 'video__next');
   setjaImgAElement('/img/next.svg', d5);
   div.appendChild(d5);
