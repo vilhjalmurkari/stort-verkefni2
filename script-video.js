@@ -13,6 +13,7 @@ function birtaError() {
 function setjaImgAElement(img, element) {
   const image = document.createElement('img');
   image.setAttribute('src', img);
+  image.setAttribute('class', 'buttonImg');
   element.appendChild(image);
 }
 

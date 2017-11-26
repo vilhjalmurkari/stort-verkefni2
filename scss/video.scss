@@ -68,25 +68,35 @@
     width: 26.667%;
     margin-bottom: $gutter;
     justify-content: space-around;
+
   }
 
   &__back {
     width: 15%;
+    padding: 3px;
     color: inherit;
     background: none;
     border: 0;
+
+    &:focus {
+      outline-color: #808080;
+    }
   }
 
   &__image:focus {
     background-color: #fff;
-
   }
 
   &__play-and-pause {
     width: 15%;
+    padding: 3px;
     color: inherit;
     background: none;
     border: 0;
+
+    &:focus {
+      outline-color: #808080;
+    }
   }
 
   &__play {
@@ -107,9 +117,14 @@
 
   &__mute-and-unmute {
     width: 15%;
+    padding: 3px;
     color: inherit;
     background: none;
     border: 0;
+
+    &:focus {
+      outline-color: #808080;
+    }
   }
 
   &__mute {
@@ -130,16 +145,26 @@
 
   &__fullscreen {
     width: 15%;
+    padding: 3px;
     color: inherit;
     background: none;
     border: 0;
+
+    &:focus {
+      outline-color: #808080;
+    }
   }
 
   &__next {
     width: 15%;
+    padding: 3px;
     color: inherit;
     background: none;
     border: 0;
+
+    &:focus {
+      outline-color: #808080;
+    }
   }
 
   &__to-original-page {
