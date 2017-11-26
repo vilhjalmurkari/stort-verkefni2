@@ -60,19 +60,35 @@
   }
 
   &__over {
-    width: 5%;
+    width: 41.4px;
+  }
+
+  &__notExists {
+    margin-bottom: 20 * $gutter;
+
+    @media (max-width: 800px) {
+      margin-bottom: 17 * $gutter;
+    }
+
+    @media (max-width: 700px) {
+      margin-bottom: 15 * $gutter;
+    }
+
+    @media (max-width: 600px) {
+      margin-bottom: 12 * $gutter;
+    }
   }
 
   &__button-list {
     display: flex;
-    width: 26.667%;
+    width: 245.6px;
     margin-bottom: $gutter;
     justify-content: space-around;
 
   }
 
   &__back {
-    width: 15%;
+    width: 43.5px;
     padding: 3px;
     color: inherit;
     background: none;
@@ -88,7 +104,7 @@
   }
 
   &__play-and-pause {
-    width: 15%;
+    width: 43.5px;
     padding: 3px;
     color: inherit;
     background: none;
@@ -116,7 +132,7 @@
   }
 
   &__mute-and-unmute {
-    width: 15%;
+    width: 43.5px;
     padding: 3px;
     color: inherit;
     background: none;
@@ -144,7 +160,7 @@
   }
 
   &__fullscreen {
-    width: 15%;
+    width: 43.5px;
     padding: 3px;
     color: inherit;
     background: none;
@@ -156,7 +172,7 @@
   }
 
   &__next {
-    width: 15%;
+    width: 43.5px;
     padding: 3px;
     color: inherit;
     background: none;

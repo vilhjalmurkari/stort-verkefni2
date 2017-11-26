@@ -16,8 +16,8 @@ function birtaError() {
 
 function setjaImgAElement(img, element) {
   var image = document.createElement('img');
+  image.setAttribute('class', 'image');
   image.setAttribute('src', img);
-  image.setAttribute('class', 'buttonImg');
   element.appendChild(image);
 }
 
@@ -68,17 +68,9 @@ function geraDivFyrirTakka(div) {
   div.appendChild(d5);
 }
 
-function geraVideo(data) {
-  var div = document.createElement('div');
-  div.setAttribute('class', 'video');
-
-  var titill = document.createElement('h1');
-  titill.setAttribute('class', 'video__title');
-  titill.appendChild(document.createTextNode(data.title));
-  div.appendChild(titill);
-
-  var divForVideo = document.createElement('div');
-  divForVideo.setAttribute('class', 'video__video-container');
+function makeVideoContainer(mainDiv, data) {
+  var element = document.createElement('div');
+  element.setAttribute('class', 'video__video-container');
   var poster = document.createElement('video');
   poster.setAttribute('class', 'video__video');
   poster.setAttribute('poster', data.poster);
@@ -91,13 +83,39 @@ function geraVideo(data) {
   over.setAttribute('src', '/img/play.svg');
   overlay.appendChild(over);
 
-  divForVideo.appendChild(poster);
-  divForVideo.appendChild(overlay);
-  div.appendChild(divForVideo);
+  element.appendChild(poster);
+  element.appendChild(overlay);
+  mainDiv.appendChild(element);
+}
+
+function makeVideoNotExists(mainDiv) {
+  var p = document.createElement('p');
+  p.setAttribute('class', 'video__notExists');
+  p.appendChild(document.createTextNode('Videó er ekki til'));
+  mainDiv.appendChild(p);
+}
+
+function geraVideo(data, hvortIDseTil) {
+  var div = document.createElement('div');
+  div.setAttribute('class', 'video');
+
+  var titill = document.createElement('h1');
+  titill.setAttribute('class', 'video__title');
+  if (hvortIDseTil) {
+    titill.appendChild(document.createTextNode(data.title));
+  } else {
+    titill.appendChild(document.createTextNode('Myndbandaleigan'));
+  }
+  div.appendChild(titill);
+
+  if (hvortIDseTil) {
+    makeVideoContainer(div, data);
+  } else {
+    makeVideoNotExists(div);
+  }
 
   var buttons = document.createElement('div');
   buttons.setAttribute('class', 'video__button-list');
-
   div.appendChild(buttons);
   geraDivFyrirTakka(buttons);
 
@@ -180,17 +198,19 @@ function loadMovie() {
   request.onload = function () {
     var data = void 0;
     var myndband = void 0;
+    var hvortIDseTil = false;
 
     if (request.status >= 200 && request.status < 400) {
       data = JSON.parse(request.response);
 
       for (var i = 0; i < data.videos.length; i += 1) {
-        if (data.videos[i].id === parseInt(location.search.substring(4), 10)) {
+        if (data.videos[i].id === parseInt(window.location.search.substring(4), 10)) {
           myndband = data.videos[i];
+          hvortIDseTil = true;
         }
       }
 
-      geraVideo(myndband);
+      geraVideo(myndband, hvortIDseTil);
 
       var play = document.querySelector('.video__play');
       var pause = document.querySelector('.video__pause-hidden');
@@ -200,69 +220,70 @@ function loadMovie() {
       var mute = document.querySelector('.video__mute');
       var unmute = document.querySelector('.video__unmute-hidden');
       var overlay = document.querySelector('.video__overlay');
-      console.log(overlay);
 
-      var a = [];
+      if (hvortIDseTil) {
+        var a = [];
 
-      back.addEventListener('click', spolaTilbaka);
-      next.addEventListener('click', spolaAfram);
+        back.addEventListener('click', spolaTilbaka);
+        next.addEventListener('click', spolaAfram);
 
-      play.addEventListener('click', function () {
-        a = spila(play, pause, overlay);
-        var _a = a;
+        play.addEventListener('click', function () {
+          a = spila(play, pause, overlay);
+          var _a = a;
 
-        var _a2 = _slicedToArray(_a, 3);
+          var _a2 = _slicedToArray(_a, 3);
 
-        play = _a2[0];
-        pause = _a2[1];
-        overlay = _a2[2];
-      });
+          play = _a2[0];
+          pause = _a2[1];
+          overlay = _a2[2];
+        });
 
-      pause.addEventListener('click', function () {
-        a = pasa(play, pause, overlay);
-        var _a3 = a;
+        pause.addEventListener('click', function () {
+          a = pasa(play, pause, overlay);
+          var _a3 = a;
 
-        var _a4 = _slicedToArray(_a3, 3);
+          var _a4 = _slicedToArray(_a3, 3);
 
-        play = _a4[0];
-        pause = _a4[1];
-        overlay = _a4[2];
-      });
+          play = _a4[0];
+          pause = _a4[1];
+          overlay = _a4[2];
+        });
 
-      mute.addEventListener('click', function () {
-        a = soundOff(mute, unmute);
-        var _a5 = a;
+        mute.addEventListener('click', function () {
+          a = soundOff(mute, unmute);
+          var _a5 = a;
 
-        var _a6 = _slicedToArray(_a5, 2);
+          var _a6 = _slicedToArray(_a5, 2);
 
-        mute = _a6[0];
-        unmute = _a6[1];
-      });
+          mute = _a6[0];
+          unmute = _a6[1];
+        });
 
-      unmute.addEventListener('click', function () {
-        a = soundOn(mute, unmute);
-        var _a7 = a;
+        unmute.addEventListener('click', function () {
+          a = soundOn(mute, unmute);
+          var _a7 = a;
 
-        var _a8 = _slicedToArray(_a7, 2);
+          var _a8 = _slicedToArray(_a7, 2);
 
-        mute = _a8[0];
-        unmute = _a8[1];
-      });
+          mute = _a8[0];
+          unmute = _a8[1];
+        });
 
-      full.addEventListener('click', function () {
-        fullscreen();
-      });
+        full.addEventListener('click', function () {
+          fullscreen();
+        });
 
-      overlay.addEventListener('click', function () {
-        a = spila(play, pause, overlay);
-        var _a9 = a;
+        overlay.addEventListener('click', function () {
+          a = spila(play, pause, overlay);
+          var _a9 = a;
 
-        var _a10 = _slicedToArray(_a9, 3);
+          var _a10 = _slicedToArray(_a9, 3);
 
-        play = _a10[0];
-        pause = _a10[1];
-        overlay = _a10[2];
-      });
+          play = _a10[0];
+          pause = _a10[1];
+          overlay = _a10[2];
+        });
+      }
     }
   };
 

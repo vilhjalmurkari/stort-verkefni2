@@ -88,6 +88,7 @@ function makeVideoColumn(data, element) {
   const poster = document.createElement('div');
   poster.setAttribute('class', 'videolist__poster');
   const mynd = document.createElement('img');
+  mynd.setAttribute('class', 'image');
   mynd.setAttribute('src', data.poster);
   poster.appendChild(mynd);
 

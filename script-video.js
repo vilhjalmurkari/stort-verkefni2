@@ -12,8 +12,8 @@ function birtaError() {
 
 function setjaImgAElement(img, element) {
   const image = document.createElement('img');
+  image.setAttribute('class', 'image');
   image.setAttribute('src', img);
-  image.setAttribute('class', 'buttonImg');
   element.appendChild(image);
 }
 
@@ -64,17 +64,9 @@ function geraDivFyrirTakka(div) {
   div.appendChild(d5);
 }
 
-function geraVideo(data) {
-  const div = document.createElement('div');
-  div.setAttribute('class', 'video');
-
-  const titill = document.createElement('h1');
-  titill.setAttribute('class', 'video__title');
-  titill.appendChild(document.createTextNode(data.title));
-  div.appendChild(titill);
-
-  const divForVideo = document.createElement('div');
-  divForVideo.setAttribute('class', 'video__video-container');
+function makeVideoContainer(mainDiv, data) {
+  const element = document.createElement('div');
+  element.setAttribute('class', 'video__video-container');
   const poster = document.createElement('video');
   poster.setAttribute('class', 'video__video');
   poster.setAttribute('poster', data.poster);
@@ -87,13 +79,39 @@ function geraVideo(data) {
   over.setAttribute('src', '/img/play.svg');
   overlay.appendChild(over);
 
-  divForVideo.appendChild(poster);
-  divForVideo.appendChild(overlay);
-  div.appendChild(divForVideo);
+  element.appendChild(poster);
+  element.appendChild(overlay);
+  mainDiv.appendChild(element);
+}
+
+function makeVideoNotExists(mainDiv) {
+  const p = document.createElement('p');
+  p.setAttribute('class', 'video__notExists');
+  p.appendChild(document.createTextNode('Videó er ekki til'));
+  mainDiv.appendChild(p);
+}
+
+function geraVideo(data, hvortIDseTil) {
+  const div = document.createElement('div');
+  div.setAttribute('class', 'video');
+
+  const titill = document.createElement('h1');
+  titill.setAttribute('class', 'video__title');
+  if (hvortIDseTil) {
+    titill.appendChild(document.createTextNode(data.title));
+  } else {
+    titill.appendChild(document.createTextNode('Myndbandaleigan'));
+  }
+  div.appendChild(titill);
+
+  if (hvortIDseTil) {
+    makeVideoContainer(div, data);
+  } else {
+    makeVideoNotExists(div);
+  }
 
   const buttons = document.createElement('div');
   buttons.setAttribute('class', 'video__button-list');
-
   div.appendChild(buttons);
   geraDivFyrirTakka(buttons);
 
@@ -176,17 +194,19 @@ function loadMovie() {
   request.onload = () => {
     let data;
     let myndband;
+    let hvortIDseTil = false;
 
     if (request.status >= 200 && request.status < 400) {
       data = JSON.parse(request.response);
 
       for (let i = 0; i < data.videos.length; i += 1) {
-        if (data.videos[i].id === parseInt(location.search.substring(4), 10)) {
+        if (data.videos[i].id === parseInt(window.location.search.substring(4), 10)) {
           myndband = data.videos[i];
+          hvortIDseTil = true;
         }
       }
 
-      geraVideo(myndband);
+      geraVideo(myndband, hvortIDseTil);
 
       let play = document.querySelector('.video__play');
       let pause = document.querySelector('.video__pause-hidden');
@@ -196,42 +216,43 @@ function loadMovie() {
       let mute = document.querySelector('.video__mute');
       let unmute = document.querySelector('.video__unmute-hidden');
       let overlay = document.querySelector('.video__overlay');
-      console.log(overlay);
-
-      let a = [];
-
-      back.addEventListener('click', spolaTilbaka);
-      next.addEventListener('click', spolaAfram);
 
 
-      play.addEventListener('click', () => {
-        a = spila(play, pause, overlay);
-        [play, pause, overlay] = a;
-      });
+      if (hvortIDseTil) {
+        let a = [];
 
-      pause.addEventListener('click', () => {
-        a = pasa(play, pause, overlay);
-        [play, pause, overlay] = a;
-      });
+        back.addEventListener('click', spolaTilbaka);
+        next.addEventListener('click', spolaAfram);
 
-      mute.addEventListener('click', () => {
-        a = soundOff(mute, unmute);
-        [mute, unmute] = a;
-      });
+        play.addEventListener('click', () => {
+          a = spila(play, pause, overlay);
+          [play, pause, overlay] = a;
+        });
 
-      unmute.addEventListener('click', () => {
-        a = soundOn(mute, unmute);
-        [mute, unmute] = a;
-      });
+        pause.addEventListener('click', () => {
+          a = pasa(play, pause, overlay);
+          [play, pause, overlay] = a;
+        });
 
-      full.addEventListener('click', () => {
-        fullscreen();
-      });
+        mute.addEventListener('click', () => {
+          a = soundOff(mute, unmute);
+          [mute, unmute] = a;
+        });
 
-      overlay.addEventListener('click', () => {
-        a = spila(play, pause, overlay);
-        [play, pause, overlay] = a;
-      });
+        unmute.addEventListener('click', () => {
+          a = soundOn(mute, unmute);
+          [mute, unmute] = a;
+        });
+
+        full.addEventListener('click', () => {
+          fullscreen();
+        });
+
+        overlay.addEventListener('click', () => {
+          a = spila(play, pause, overlay);
+          [play, pause, overlay] = a;
+        });
+      }
     }
   };
 
