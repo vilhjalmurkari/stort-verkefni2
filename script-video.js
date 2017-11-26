@@ -123,12 +123,7 @@ function spila(nuverandi, thadSemBreytist, overlay) {
   thadSemBreytist.setAttribute('class', 'video__pause');
   overlay.setAttribute('class', 'video__overlay-hidden');
 
-  let a = new Array();
-  a.push(nuverandi);
-  a.push(thadSemBreytist);
-  a.push(overlay);
-
-  return a;
+  return [nuverandi, thadSemBreytist, overlay];
 }
 
 function pasa(nuverandi, thadSemBreytist, overlay) {
@@ -139,12 +134,7 @@ function pasa(nuverandi, thadSemBreytist, overlay) {
   thadSemBreytist.setAttribute('class', 'video__pause-hidden');
   overlay.setAttribute('class', 'video__overlay');
 
-  let a = new Array();
-  a.push(nuverandi);
-  a.push(thadSemBreytist);
-  a.push(overlay);
-
-  return a;
+  return [nuverandi, thadSemBreytist, overlay];
 }
 
 function soundOff(nuverandi, thadSemBreytist) {
@@ -154,11 +144,7 @@ function soundOff(nuverandi, thadSemBreytist) {
   nuverandi.setAttribute('class', 'video__mute-hidden');
   thadSemBreytist.setAttribute('class', 'video__unmute');
 
-  let a = new Array();
-  a.push(nuverandi);
-  a.push(thadSemBreytist);
-
-  return a;
+  return [nuverandi, thadSemBreytist];
 }
 
 function soundOn(nuverandi, thadSemBreytist) {
@@ -168,11 +154,7 @@ function soundOn(nuverandi, thadSemBreytist) {
   nuverandi.setAttribute('class', 'video__mute');
   thadSemBreytist.setAttribute('class', 'video__unmute-hidden');
 
-  let a = new Array();
-  a.push(nuverandi);
-  a.push(thadSemBreytist);
-
-  return a;
+  return [nuverandi, thadSemBreytist];
 }
 
 function fullscreen() {
@@ -215,7 +197,7 @@ function loadMovie() {
       let overlay = document.querySelector('.video__overlay');
       console.log(overlay);
 
-      let a = new Array();
+      let a = [];
 
       back.addEventListener('click', spolaTilbaka);
       next.addEventListener('click', spolaAfram);
@@ -223,32 +205,22 @@ function loadMovie() {
 
       play.addEventListener('click', () => {
         a = spila(play, pause, overlay);
-
-        play = a[0];
-        pause = a[1];
-        overlay = a[2];
+        [play, pause, overlay] = a;
       });
 
       pause.addEventListener('click', () => {
         a = pasa(play, pause, overlay);
-
-        play = a[0];
-        pause = a[1];
-        overlay = a[2];
+        [play, pause, overlay] = a;
       });
 
       mute.addEventListener('click', () => {
         a = soundOff(mute, unmute);
-
-        mute = a[0];
-        unmute = a[1];
+        [mute, unmute] = a;
       });
 
       unmute.addEventListener('click', () => {
         a = soundOn(mute, unmute);
-
-        mute = a[0];
-        unmute = a[1];
+        [mute, unmute] = a;
       });
 
       full.addEventListener('click', () => {
@@ -257,13 +229,8 @@ function loadMovie() {
 
       overlay.addEventListener('click', () => {
         a = spila(play, pause, overlay);
-
-        play = a[0];
-        pause = a[1];
-        overlay = a[2];
+        [play, pause, overlay] = a;
       });
-
-
     }
   };
 
@@ -273,8 +240,6 @@ function loadMovie() {
   request.send();
 }
 
-
 document.addEventListener('DOMContentLoaded', () => {
   loadMovie();
-
 });

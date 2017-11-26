@@ -1,5 +1,7 @@
 'use strict';
 
+var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
+
 var main = document.querySelector('main');
 
 function birtaError() {
@@ -125,12 +127,7 @@ function spila(nuverandi, thadSemBreytist, overlay) {
   thadSemBreytist.setAttribute('class', 'video__pause');
   overlay.setAttribute('class', 'video__overlay-hidden');
 
-  var a = new Array();
-  a.push(nuverandi);
-  a.push(thadSemBreytist);
-  a.push(overlay);
-
-  return a;
+  return [nuverandi, thadSemBreytist, overlay];
 }
 
 function pasa(nuverandi, thadSemBreytist, overlay) {
@@ -141,12 +138,7 @@ function pasa(nuverandi, thadSemBreytist, overlay) {
   thadSemBreytist.setAttribute('class', 'video__pause-hidden');
   overlay.setAttribute('class', 'video__overlay');
 
-  var a = new Array();
-  a.push(nuverandi);
-  a.push(thadSemBreytist);
-  a.push(overlay);
-
-  return a;
+  return [nuverandi, thadSemBreytist, overlay];
 }
 
 function soundOff(nuverandi, thadSemBreytist) {
@@ -156,11 +148,7 @@ function soundOff(nuverandi, thadSemBreytist) {
   nuverandi.setAttribute('class', 'video__mute-hidden');
   thadSemBreytist.setAttribute('class', 'video__unmute');
 
-  var a = new Array();
-  a.push(nuverandi);
-  a.push(thadSemBreytist);
-
-  return a;
+  return [nuverandi, thadSemBreytist];
 }
 
 function soundOn(nuverandi, thadSemBreytist) {
@@ -170,11 +158,7 @@ function soundOn(nuverandi, thadSemBreytist) {
   nuverandi.setAttribute('class', 'video__mute');
   thadSemBreytist.setAttribute('class', 'video__unmute-hidden');
 
-  var a = new Array();
-  a.push(nuverandi);
-  a.push(thadSemBreytist);
-
-  return a;
+  return [nuverandi, thadSemBreytist];
 }
 
 function fullscreen() {
@@ -217,39 +201,51 @@ function loadMovie() {
       var overlay = document.querySelector('.video__overlay');
       console.log(overlay);
 
-      var a = new Array();
+      var a = [];
 
       back.addEventListener('click', spolaTilbaka);
       next.addEventListener('click', spolaAfram);
 
       play.addEventListener('click', function () {
         a = spila(play, pause, overlay);
+        var _a = a;
 
-        play = a[0];
-        pause = a[1];
-        overlay = a[2];
+        var _a2 = _slicedToArray(_a, 3);
+
+        play = _a2[0];
+        pause = _a2[1];
+        overlay = _a2[2];
       });
 
       pause.addEventListener('click', function () {
         a = pasa(play, pause, overlay);
+        var _a3 = a;
 
-        play = a[0];
-        pause = a[1];
-        overlay = a[2];
+        var _a4 = _slicedToArray(_a3, 3);
+
+        play = _a4[0];
+        pause = _a4[1];
+        overlay = _a4[2];
       });
 
       mute.addEventListener('click', function () {
         a = soundOff(mute, unmute);
+        var _a5 = a;
 
-        mute = a[0];
-        unmute = a[1];
+        var _a6 = _slicedToArray(_a5, 2);
+
+        mute = _a6[0];
+        unmute = _a6[1];
       });
 
       unmute.addEventListener('click', function () {
         a = soundOn(mute, unmute);
+        var _a7 = a;
 
-        mute = a[0];
-        unmute = a[1];
+        var _a8 = _slicedToArray(_a7, 2);
+
+        mute = _a8[0];
+        unmute = _a8[1];
       });
 
       full.addEventListener('click', function () {
@@ -258,10 +254,13 @@ function loadMovie() {
 
       overlay.addEventListener('click', function () {
         a = spila(play, pause, overlay);
+        var _a9 = a;
 
-        play = a[0];
-        pause = a[1];
-        overlay = a[2];
+        var _a10 = _slicedToArray(_a9, 3);
+
+        play = _a10[0];
+        pause = _a10[1];
+        overlay = _a10[2];
       });
     }
   };
